@@ -1,0 +1,445 @@
+.ask-container {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.ask-container.mounted .ask-card {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ask-card {
+  background: linear-gradient(145deg, #fff 0%, #fff5f8 100%);
+  padding: 2.5rem 3rem;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px var(--shadow), 0 0 0 1px rgba(255, 107, 157, 0.1);
+  text-align: center;
+  position: relative;
+  min-width: 320px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.question {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: #c2185b;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  font-size: 1rem;
+  color: #ad1457;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.buttons {
+  position: relative;
+  min-height: 56px;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+}
+
+.btn {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, #ff6b9d, #e91e63);
+  color: white;
+  box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+.btn-yes:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 32px rgba(233, 30, 99, 0.5);
+}
+
+.btn-yes:active {
+  transform: scale(1.02);
+}
+
+.btn-no {
+  background: linear-gradient(145deg, #f5f5f5, #eee);
+  color: #999;
+  border: 2px solid #e0e0e0;
+  z-index: 1;
+}
+
+.btn-no:hover {
+  background: linear-gradient(145deg, #eee, #e5e5e5);
+  color: #888;
+}
+
+/* GIF screen (before flower) */
+.gif-wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0a;
+  z-index: 100;
+  animation: fadeIn 0.4s ease;
+}
+
+.curry-gif {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Success screen – flower animation */
+.success-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.flower-scene {
+  position: relative;
+  width: min(320px, 85vw);
+  aspect-ratio: 1;
+  max-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stem-scene {
+  aspect-ratio: 320 / 560;
+  max-height: 88vh;
+}
+
+.stem-branches-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  overflow: visible;
+}
+
+.stem-path {
+  stroke-dasharray: 650;
+  stroke-dashoffset: 650;
+  animation: stemGrow 1.4s ease-out forwards;
+}
+
+@keyframes stemGrow {
+  to { stroke-dashoffset: 0; }
+}
+
+.branch-path {
+  stroke-dasharray: 180;
+  stroke-dashoffset: 180;
+  animation: branchGrow 0.7s ease-out forwards;
+}
+
+.branch-path-1 { animation-delay: 0.9s; }
+.branch-path-2 { animation-delay: 1s; }
+.branch-path-3 { animation-delay: 1.1s; }
+.branch-path-4 { animation-delay: 1.2s; }
+.branch-path-5 { animation-delay: 1.3s; }
+.branch-path-6 { animation-delay: 1.4s; }
+
+@keyframes branchGrow {
+  to { stroke-dashoffset: 0; }
+}
+
+.flower-at-top {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  left: 50%;
+  top: 12%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.flower-center {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+}
+
+.petal {
+  position: absolute;
+  width: 42px;
+  height: 58px;
+  background: linear-gradient(135deg, #ff9ebb 0%, #ff6b9d 50%, #e91e63 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  left: 50%;
+  top: 50%;
+  transform-origin: center 100%;
+  opacity: 0;
+  animation: petalBloom 0.8s ease forwards;
+}
+
+.petal-1 { 
+  transform: translate(-50%, -50%) rotate(0deg) translateY(20px); 
+  animation-delay: 1.35s; 
+  animation-name: petalBloom1;
+}
+.petal-2 { 
+  transform: translate(-50%, -50%) rotate(45deg) translateY(20px); 
+  animation-delay: 1.4s; 
+  animation-name: petalBloom2;
+}
+.petal-3 { 
+  transform: translate(-50%, -50%) rotate(90deg) translateY(20px); 
+  animation-delay: 1.45s; 
+  animation-name: petalBloom3;
+}
+.petal-4 { 
+  transform: translate(-50%, -50%) rotate(135deg) translateY(20px); 
+  animation-delay: 1.5s; 
+  animation-name: petalBloom4;
+}
+.petal-5 { 
+  transform: translate(-50%, -50%) rotate(180deg) translateY(20px); 
+  animation-delay: 1.55s; 
+  animation-name: petalBloom5;
+}
+.petal-6 { 
+  transform: translate(-50%, -50%) rotate(225deg) translateY(20px); 
+  animation-delay: 1.6s; 
+  animation-name: petalBloom6;
+}
+.petal-7 { 
+  transform: translate(-50%, -50%) rotate(270deg) translateY(20px); 
+  animation-delay: 1.65s; 
+  animation-name: petalBloom7;
+}
+.petal-8 { 
+  transform: translate(-50%, -50%) rotate(315deg) translateY(20px); 
+  animation-delay: 1.7s; 
+  animation-name: petalBloom8;
+}
+
+@keyframes petalBloom1 {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(0deg) translateY(20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) translateY(20px) scale(1); }
+}
+@keyframes petalBloom2 {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(45deg) translateY(20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(45deg) translateY(20px) scale(1); }
+}
+@keyframes petalBloom3 {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(90deg) translateY(20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(90deg) translateY(20px) scale(1); }
+}
+@keyframes petalBloom4 {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(135deg) translateY(20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(135deg) translateY(20px) scale(1); }
+}
+@keyframes petalBloom5 {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(180deg) translateY(20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(180deg) translateY(20px) scale(1); }
+}
+@keyframes petalBloom6 {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(225deg) translateY(20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(225deg) translateY(20px) scale(1); }
+}
+@keyframes petalBloom7 {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(270deg) translateY(20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(270deg) translateY(20px) scale(1); }
+}
+@keyframes petalBloom8 {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(315deg) translateY(20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(315deg) translateY(20px) scale(1); }
+}
+
+.flower-core {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  animation: coreBloom 0.5s ease 1.5s both;
+}
+
+@keyframes coreBloom {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+
+.branch-ends {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.branch-end {
+  position: absolute;
+  width: 22%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: photoBloom 0.5s ease forwards;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.branch-end:hover .branch-photo-wrap {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(233, 30, 99, 0.5);
+  transform: scale(1.08);
+}
+
+.branch-end-1 { left: 4%;   top: 76%; animation-delay: 1.5s; }
+.branch-end-2 { left: 74%;  top: 62%; animation-delay: 1.6s; }
+.branch-end-3 { left: 2%;   top: 46%; animation-delay: 1.7s; }
+.branch-end-4 { left: 74%; top: 34%; animation-delay: 1.8s; }
+.branch-end-5 { left: 6%;  top: 20%; animation-delay: 1.9s; }
+.branch-end-6 { left: 70%; top: 12%; animation-delay: 2s; }
+
+@keyframes photoBloom {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.branch-photo-wrap {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(233, 30, 99, 0.4);
+  background: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.branch-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.flower-message {
+  position: absolute;
+  bottom: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 700;
+  color: #c2185b;
+  opacity: 0;
+  animation: messageIn 0.5s ease 2.4s forwards;
+}
+
+@keyframes messageIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Photo lightbox – full photo, minimal crop */
+.photo-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: lightboxFadeIn 0.25s ease;
+}
+
+@keyframes lightboxFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.photo-lightbox-content {
+  position: relative;
+  max-width: 92vw;
+  max-height: 88vh;
+  animation: lightboxZoomIn 0.3s ease;
+}
+
+@keyframes lightboxZoomIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.photo-lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  background: #111;
+}
+
+.photo-lightbox-close {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.photo-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.35);
+}

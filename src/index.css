@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --pink: #ff6b9d;
+  --pink-deep: #e91e63;
+  --pink-soft: #ffb3d9;
+  --rose: #ff85a2;
+  --cream: #fff5f8;
+  --gold: #ffd700;
+  --shadow: rgba(233, 30, 99, 0.25);
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 50%, #ffd6e0 100%);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Floating hearts background */
+.bg-hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-hearts span {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0.15;
+  animation: float-heart 8s ease-in-out infinite;
+}
+
+.bg-hearts span:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.bg-hearts span:nth-child(2) { left: 80%; top: 15%; animation-delay: 1s; }
+.bg-hearts span:nth-child(3) { left: 25%; top: 70%; animation-delay: 2s; }
+.bg-hearts span:nth-child(4) { left: 70%; top: 65%; animation-delay: 0.5s; }
+.bg-hearts span:nth-child(5) { left: 50%; top: 40%; animation-delay: 1.5s; }
+
+@keyframes float-heart {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.15; }
+  50% { transform: translateY(-20px) scale(1.1); opacity: 0.25; }
+}
