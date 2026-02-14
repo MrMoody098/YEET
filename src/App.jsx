@@ -24,60 +24,71 @@ function App() {
   const noButtonRef = useRef(null)
   const audioRef = useRef(null)
   const reactionAudioRef = useRef(null)
+  const musicGainRef = useRef(null) // Web Audio gain node for background music (0.2)
 
-  const ensureAudioPlays = useCallback(() => {
-    if (audioRef.current && audioRef.current.paused) {
-      audioRef.current.volume = 0.2
-      audioRef.current.play()
-        .then(() => setMusicPlaying(true))
-        .catch(() => {})
+  const connectMusicToWebAudio = useCallback(() => {
+    const el = audioRef.current
+    if (!el || musicGainRef.current) return
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)()
+      const source = ctx.createMediaElementSource(el)
+      const gainNode = ctx.createGain()
+      gainNode.gain.value = 0.2
+      source.connect(gainNode)
+      gainNode.connect(ctx.destination)
+      musicGainRef.current = { gainNode, ctx }
+    } catch (e) {
+      el.volume = 0.2
     }
   }, [])
 
+  const ensureAudioPlays = useCallback(() => {
+    const el = audioRef.current
+    if (!el || !el.paused) return
+    connectMusicToWebAudio()
+    const g = musicGainRef.current
+    if (g) {
+      g.gainNode.gain.value = 0.2
+      if (g.ctx.state === 'suspended') g.ctx.resume()
+    } else {
+      el.volume = 0.2
+    }
+    el.play()
+      .then(() => setMusicPlaying(true))
+      .catch(() => {})
+  }, [connectMusicToWebAudio])
+
   useEffect(() => {
-    // Set volume levels
-    if (audioRef.current) {
-      audioRef.current.volume = 0.2 // Background music at 20%
-    }
     if (reactionAudioRef.current) {
-      reactionAudioRef.current.volume = 1.0 // Reaction sounds at 100%
+      reactionAudioRef.current.volume = 1.0
     }
     
-    // Try to autoplay the background music
-    if (audioRef.current) {
-      const playPromise = audioRef.current.play()
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setMusicPlaying(true)
-          })
-          .catch((error) => {
-            console.log('Autoplay blocked, will play on user interaction:', error)
-            setMusicPlaying(false)
-          })
-      }
+    const el = audioRef.current
+    if (!el) return
+    
+    connectMusicToWebAudio()
+    if (musicGainRef.current) musicGainRef.current.gainNode.gain.value = 0.2
+    else el.volume = 0.2
+    
+    const playPromise = el.play()
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => setMusicPlaying(true))
+        .catch(() => setMusicPlaying(false))
     }
     
-    // Fallback: play on any user interaction
     const playOnInteraction = () => {
       if (audioRef.current && audioRef.current.paused) {
-        audioRef.current.volume = 0.2
-        audioRef.current.play()
-          .then(() => {
-            setMusicPlaying(true)
-          })
-          .catch(() => {})
+        ensureAudioPlays()
       }
     }
-    
     document.addEventListener('click', playOnInteraction, { once: true })
     document.addEventListener('touchstart', playOnInteraction, { once: true })
-    
     return () => {
       document.removeEventListener('click', playOnInteraction)
       document.removeEventListener('touchstart', playOnInteraction)
     }
-  }, [])
+  }, [connectMusicToWebAudio, ensureAudioPlays])
 
   useEffect(() => {
     if (!saidYes || !showGif) return
@@ -88,7 +99,24 @@ function App() {
   return (
     <>
       <audio
-        ref={audioRef}
+        ref={(el) => {
+          audioRef.current = el
+          if (!el) {
+            musicGainRef.current = null
+            return
+          }
+          try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)()
+            const source = ctx.createMediaElementSource(el)
+            const gainNode = ctx.createGain()
+            gainNode.gain.value = 0.2
+            source.connect(gainNode)
+            gainNode.connect(ctx.destination)
+            musicGainRef.current = { gainNode, ctx }
+          } catch (_) {
+            el.volume = 0.2
+          }
+        }}
         src={`${import.meta.env.BASE_URL}Pag-Ibig ay Kanibalismo II.mp3`}
         loop
         preload="auto"
@@ -104,12 +132,7 @@ function App() {
       {!musicPlaying && (
         <button
           className="music-play-btn"
-          onClick={() => {
-            if (audioRef.current) {
-              audioRef.current.volume = 0.2
-              audioRef.current.play().then(() => setMusicPlaying(true))
-            }
-          }}
+          onClick={ensureAudioPlays}
           aria-label="Play music"
         >
           🔊 Tap to play music
