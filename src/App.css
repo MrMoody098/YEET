@@ -292,8 +292,8 @@
 
 .flower-core {
   position: absolute;
-  width: 38px;
-  height: 38px;
+  width: 48px;
+  height: 48px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, 10px);
