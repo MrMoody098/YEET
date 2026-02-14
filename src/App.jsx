@@ -62,21 +62,9 @@ function App() {
     if (reactionAudioRef.current) {
       reactionAudioRef.current.volume = 1.0
     }
-    
-    const el = audioRef.current
-    if (!el) return
-    
-    connectMusicToWebAudio()
-    if (musicGainRef.current) musicGainRef.current.gainNode.gain.value = 0.2
-    else el.volume = 0.2
-    
-    const playPromise = el.play()
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => setMusicPlaying(true))
-        .catch(() => setMusicPlaying(false))
-    }
-    
+    // Don't autoplay here: mobile (especially iOS) requires audio to start in a user gesture.
+    // When user taps anywhere or "Tap to play music", ensureAudioPlays() runs and creates
+    // the Web Audio context + play() in the same gesture, which works on mobile.
     const playOnInteraction = () => {
       if (audioRef.current && audioRef.current.paused) {
         ensureAudioPlays()
@@ -88,7 +76,7 @@ function App() {
       document.removeEventListener('click', playOnInteraction)
       document.removeEventListener('touchstart', playOnInteraction)
     }
-  }, [connectMusicToWebAudio, ensureAudioPlays])
+  }, [ensureAudioPlays])
 
   useEffect(() => {
     if (!saidYes || !showGif) return
@@ -99,24 +87,7 @@ function App() {
   return (
     <>
       <audio
-        ref={(el) => {
-          audioRef.current = el
-          if (!el) {
-            musicGainRef.current = null
-            return
-          }
-          try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)()
-            const source = ctx.createMediaElementSource(el)
-            const gainNode = ctx.createGain()
-            gainNode.gain.value = 0.2
-            source.connect(gainNode)
-            gainNode.connect(ctx.destination)
-            musicGainRef.current = { gainNode, ctx }
-          } catch (_) {
-            el.volume = 0.2
-          }
-        }}
+        ref={audioRef}
         src={`${import.meta.env.BASE_URL}Pag-Ibig ay Kanibalismo II.mp3`}
         loop
         preload="auto"
