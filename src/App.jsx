@@ -16,9 +16,27 @@ function App() {
   useEffect(() => {
     // Try to autoplay the background music
     if (audioRef.current) {
-      audioRef.current.play().catch(() => {
-        // Autoplay blocked - will play on first user interaction
-      })
+      const playPromise = audioRef.current.play()
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log('Autoplay blocked, will play on user interaction:', error)
+        })
+      }
+    }
+    
+    // Fallback: play on any user interaction
+    const playOnInteraction = () => {
+      if (audioRef.current && audioRef.current.paused) {
+        audioRef.current.play().catch(() => {})
+      }
+    }
+    
+    document.addEventListener('click', playOnInteraction, { once: true })
+    document.addEventListener('touchstart', playOnInteraction, { once: true })
+    
+    return () => {
+      document.removeEventListener('click', playOnInteraction)
+      document.removeEventListener('touchstart', playOnInteraction)
     }
   }, [])
 
@@ -70,8 +88,8 @@ function App() {
         ref={audioRef}
         src={`${import.meta.env.BASE_URL}Pag-Ibig ay Kanibalismo II.mp3`}
         loop
-        autoPlay
         preload="auto"
+        playsInline
       />
       <div className="bg-hearts" aria-hidden="true">
         <span>💕</span><span>💗</span><span>💖</span><span>💝</span><span>❤️</span>
