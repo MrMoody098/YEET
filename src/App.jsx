@@ -53,37 +53,33 @@ function App() {
   }, [])
 
   const connectMusicToWebAudio = useCallback(() => {
-    if (isIOS()) return
     const el = audioRef.current
     if (!el || musicGainRef.current) return
+    const musicVol = isIOS() ? MUSIC_VOLUME_IOS : MUSIC_VOLUME_DESKTOP
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)()
       const source = ctx.createMediaElementSource(el)
       const gainNode = ctx.createGain()
-      gainNode.gain.value = 0.1
+      gainNode.gain.value = musicVol
       source.connect(gainNode)
       gainNode.connect(ctx.destination)
       musicGainRef.current = { gainNode, ctx }
     } catch (e) {
-      el.volume = 0.1
+      el.volume = musicVol
     }
   }, [])
 
   const ensureAudioPlays = useCallback(() => {
     const el = audioRef.current
     if (!el || !el.paused) return
-    if (isIOS()) {
-      el.volume = MUSIC_VOLUME_IOS
-      el.play().then(() => setMusicPlaying(true)).catch(() => {})
-      return
-    }
+    const musicVol = isIOS() ? MUSIC_VOLUME_IOS : MUSIC_VOLUME_DESKTOP
     connectMusicToWebAudio()
     const g = musicGainRef.current
     if (g) {
-      g.gainNode.gain.value = 0.1
+      g.gainNode.gain.value = musicVol
       if (g.ctx.state === 'suspended') g.ctx.resume()
     } else {
-      el.volume = 0.1
+      el.volume = musicVol
     }
     el.play()
       .then(() => setMusicPlaying(true))
