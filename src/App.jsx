@@ -68,7 +68,7 @@ function App() {
     <>
       <audio
         ref={audioRef}
-        src="/Pag-Ibig ay Kanibalismo II.mp3"
+        src={`${import.meta.env.BASE_URL}Pag-Ibig ay Kanibalismo II.mp3`}
         loop
         autoPlay
         preload="auto"
@@ -158,7 +158,7 @@ function GifScreen() {
   return (
     <div className="gif-wrapper">
       <img
-        src="/stephen-curry-space-shot.gif"
+        src={`${import.meta.env.BASE_URL}stephen-curry-space-shot.gif`}
         alt=""
         className="curry-gif"
       />
@@ -167,12 +167,12 @@ function GifScreen() {
 }
 
 const PHOTOS = [
-  '/610983950_3368924693274372_2066233376959233071_n.jpg',
-  '/626484264_840589792356396_5987847625956960686_n.jpg',
-  '/626885288_1895137311370804_8371357250499262725_n.jpg',
-  '/627643882_1567875071096922_8213328330945948446_n.jpg',
-  '/633889598_1545330409911644_2460598087201222235_n.jpg',
-  '/634318182_1226189532814495_1868138656139527503_n.jpg',
+  `${import.meta.env.BASE_URL}610983950_3368924693274372_2066233376959233071_n.jpg`,
+  `${import.meta.env.BASE_URL}626484264_840589792356396_5987847625956960686_n.jpg`,
+  `${import.meta.env.BASE_URL}626885288_1895137311370804_8371357250499262725_n.jpg`,
+  `${import.meta.env.BASE_URL}627643882_1567875071096922_8213328330945948446_n.jpg`,
+  `${import.meta.env.BASE_URL}633889598_1545330409911644_2460598087201222235_n.jpg`,
+  `${import.meta.env.BASE_URL}634318182_1226189532814495_1868138656139527503_n.jpg`,
 ]
 
 function SuccessScreen() {
