@@ -27,6 +27,7 @@ function App() {
 
   const ensureAudioPlays = useCallback(() => {
     if (audioRef.current && audioRef.current.paused) {
+      audioRef.current.volume = 0.3
       audioRef.current.play()
         .then(() => setMusicPlaying(true))
         .catch(() => {})
@@ -60,6 +61,7 @@ function App() {
     // Fallback: play on any user interaction
     const playOnInteraction = () => {
       if (audioRef.current && audioRef.current.paused) {
+        audioRef.current.volume = 0.3
         audioRef.current.play()
           .then(() => {
             setMusicPlaying(true)
@@ -104,6 +106,7 @@ function App() {
           className="music-play-btn"
           onClick={() => {
             if (audioRef.current) {
+              audioRef.current.volume = 0.3
               audioRef.current.play().then(() => setMusicPlaying(true))
             }
           }}
