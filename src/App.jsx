@@ -20,7 +20,7 @@ function isIOS() {
 }
 
 const MUSIC_VOLUME_IOS = 0.2    // iOS: use el.volume (Web Audio broke playback)
-const MUSIC_VOLUME_DESKTOP = 0.6   // Desktop: Web Audio gain
+const MUSIC_VOLUME_DESKTOP = 0.45   // Desktop: Web Audio gain
 
 function App() {
   const [saidYes, setSaidYes] = useState(false)
