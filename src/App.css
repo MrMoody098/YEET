@@ -295,7 +295,7 @@
   width: 28px;
   height: 28px;
   left: 50%;
-  top: 50%;
+  top: calc(50% - 20px);
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00);
