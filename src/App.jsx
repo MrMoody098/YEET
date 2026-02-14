@@ -135,6 +135,12 @@ function App() {
                 <stop offset="85%" stopColor="#ff6b9d" />
                 <stop offset="100%" stopColor="#e91e63" />
               </radialGradient>
+              <radialGradient id={`small-petal-grad-${i}`} cx="30%" cy="30%">
+                <stop offset="0%" stopColor="#fff0f5" />
+                <stop offset="40%" stopColor="#ffd1dc" />
+                <stop offset="70%" stopColor="#ffadc7" />
+                <stop offset="100%" stopColor="#ff91b8" />
+              </radialGradient>
               <radialGradient id={`core-grad-${i}`} cx="30%" cy="30%">
                 <stop offset="0%" stopColor="#fffde7" />
                 <stop offset="35%" stopColor="#fff59d" />
@@ -161,6 +167,18 @@ function App() {
                 stroke="#ff4081"
                 strokeWidth="0.5"
                 opacity="0.9"
+                filter={`url(#petal-shadow-${i})`}
+                transform={`rotate(${angle} 60 60)`}
+              />
+            ))}
+            {[36, 108, 180, 252, 324].map((angle) => (
+              <path
+                key={`small-${angle}`}
+                d="M 60 60 Q 54 42, 60 30 Q 66 42, 60 60 Z"
+                fill={`url(#small-petal-grad-${i})`}
+                stroke="#ff6b9d"
+                strokeWidth="0.4"
+                opacity="0.85"
                 filter={`url(#petal-shadow-${i})`}
                 transform={`rotate(${angle} 60 60)`}
               />
