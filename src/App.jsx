@@ -34,6 +34,14 @@ function App() {
   }, [])
 
   useEffect(() => {
+    // Set volume levels
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3 // Background music at 30%
+    }
+    if (reactionAudioRef.current) {
+      reactionAudioRef.current.volume = 1.0 // Reaction sounds at 100%
+    }
+    
     // Try to autoplay the background music
     if (audioRef.current) {
       const playPromise = audioRef.current.play()
