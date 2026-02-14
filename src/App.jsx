@@ -127,18 +127,31 @@ function App() {
       <div className="bg-flowers" aria-hidden="true">
         {[...Array(10)].map((_, i) => (
           <svg key={i} className="bg-flower" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="8" fill="#ff8c00" />
+            <defs>
+              <radialGradient id={`petal-grad-${i}`} cx="40%" cy="40%">
+                <stop offset="0%" stopColor="#ffd1dc" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="#ff8fab" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#e91e63" stopOpacity="1" />
+              </radialGradient>
+              <radialGradient id={`core-grad-${i}`} cx="35%" cy="35%">
+                <stop offset="0%" stopColor="#fff9c4" />
+                <stop offset="40%" stopColor="#ffd700" />
+                <stop offset="100%" stopColor="#ff8c00" />
+              </radialGradient>
+            </defs>
             {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
               <ellipse
                 key={angle}
                 cx="50"
                 cy="50"
-                rx="12"
-                ry="20"
-                fill="#ff6b9d"
-                transform={`rotate(${angle} 50 50) translate(0 -15)`}
+                rx="14"
+                ry="24"
+                fill={`url(#petal-grad-${i})`}
+                opacity="0.85"
+                transform={`rotate(${angle} 50 50) translate(0 -16)`}
               />
             ))}
+            <circle cx="50" cy="50" r="10" fill={`url(#core-grad-${i})`} opacity="0.95" />
           </svg>
         ))}
       </div>
