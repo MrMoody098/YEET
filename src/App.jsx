@@ -116,6 +116,25 @@ function App() {
         </button>
       )}
       
+      <div className="bg-flowers" aria-hidden="true">
+        {[...Array(10)].map((_, i) => (
+          <svg key={i} className="bg-flower" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="8" fill="#ff8c00" />
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+              <ellipse
+                key={angle}
+                cx="50"
+                cy="50"
+                rx="12"
+                ry="20"
+                fill="#ff6b9d"
+                transform={`rotate(${angle} 50 50) translate(0 -15)`}
+              />
+            ))}
+          </svg>
+        ))}
+      </div>
+      
       <div className="bg-hearts" aria-hidden="true">
         <span>💕</span><span>💗</span><span>💖</span><span>💝</span><span>❤️</span>
       </div>
