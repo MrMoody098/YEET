@@ -213,15 +213,13 @@ function App() {
               <button
                 className="btn btn-yes"
                 onClick={() => { 
-                  ensureAudioPlays()
-                  
-                  // Play yippie sound
+                  // Play yippie sound first (so it's not blocked by music on iOS)
                   if (reactionAudioRef.current) {
                     reactionAudioRef.current.volume = 1.0
-                    reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/yippiee.m4a`
+                    reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/${encodeURIComponent('yippiee.m4a')}`
                     reactionAudioRef.current.play().catch(() => {})
                   }
-                  
+                  ensureAudioPlays()
                   setSaidYes(true)
                   setShowGif(true)
                 }}
@@ -243,17 +241,17 @@ function App() {
                 }
                 onClick={(e) => { 
                   e.preventDefault()
-                  ensureAudioPlays()
                   
-                  // Play reaction sound
+                  // Play reaction sound first (so it's not blocked by music on iOS)
                   if (reactionAudioRef.current) {
                     reactionAudioRef.current.volume = 1.0
-                    reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/${REACTION_SOUNDS[reactionSoundIndex]}`
+                    const filename = REACTION_SOUNDS[reactionSoundIndex]
+                    reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/${encodeURIComponent(filename)}`
                     reactionAudioRef.current.play().catch(() => {})
                   }
-                  
-                  // Cycle to next sound
                   setReactionSoundIndex((prev) => (prev + 1) % REACTION_SOUNDS.length)
+                  
+                  ensureAudioPlays()
                   
                   setNoClickCount(prev => prev + 1)
                   
