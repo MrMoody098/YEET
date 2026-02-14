@@ -3,6 +3,15 @@ import './App.css'
 
 const GIF_DURATION_MS = 2000
 
+const REACTION_SOUNDS = [
+  'bruh.m4a',
+  "that's just mean.m4a",
+  'really.m4a',
+  'after I went.m4a',
+  "didn't think you were gonna.m4a",
+  'you have to be atleast curious.m4a',
+]
+
 function App() {
   const [saidYes, setSaidYes] = useState(false)
   const [showGif, setShowGif] = useState(false)
@@ -10,9 +19,11 @@ function App() {
   const [noClickCount, setNoClickCount] = useState(0) // Track how many times No was clicked
   const [mounted, setMounted] = useState(true)
   const [musicPlaying, setMusicPlaying] = useState(false)
+  const [reactionSoundIndex, setReactionSoundIndex] = useState(0)
   const cardRef = useRef(null)
   const noButtonRef = useRef(null)
   const audioRef = useRef(null)
+  const reactionAudioRef = useRef(null)
 
   const ensureAudioPlays = useCallback(() => {
     if (audioRef.current && audioRef.current.paused) {
@@ -106,6 +117,12 @@ function App() {
         ref={audioRef}
         src={`${import.meta.env.BASE_URL}Pag-Ibig ay Kanibalismo II.mp3`}
         loop
+        preload="auto"
+        playsInline
+      />
+      
+      <audio
+        ref={reactionAudioRef}
         preload="auto"
         playsInline
       />
@@ -256,6 +273,16 @@ function App() {
                 onClick={(e) => { 
                   e.preventDefault()
                   ensureAudioPlays()
+                  
+                  // Play reaction sound
+                  if (reactionAudioRef.current) {
+                    reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/${REACTION_SOUNDS[reactionSoundIndex]}`
+                    reactionAudioRef.current.play().catch(() => {})
+                  }
+                  
+                  // Cycle to next sound
+                  setReactionSoundIndex((prev) => (prev + 1) % REACTION_SOUNDS.length)
+                  
                   setNoClickCount(prev => prev + 1)
                   // After first click, trigger initial movement
                   if (noClickCount === 0 && cardRef.current) {
