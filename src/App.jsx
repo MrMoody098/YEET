@@ -334,6 +334,7 @@ const PHOTOS = [
   `${import.meta.env.BASE_URL}627643882_1567875071096922_8213328330945948446_n.jpg`,
   `${import.meta.env.BASE_URL}633889598_1545330409911644_2460598087201222235_n.jpg`,
   `${import.meta.env.BASE_URL}634318182_1226189532814495_1868138656139527503_n.jpg`,
+  `${import.meta.env.BASE_URL}${encodeURI('629353279_1666798687642911_5599515255449058704_n (1).jpg')}`,
 ]
 
 function SuccessScreen() {
@@ -367,6 +368,7 @@ function SuccessScreen() {
           <path className="branch-path branch-path-4" fill="none" stroke="url(#branchGrad)" strokeWidth="6" strokeLinecap="round" d="M 160 250 Q 260 235 295 205" />
           <path className="branch-path branch-path-5" fill="none" stroke="url(#branchGrad)" strokeWidth="6" strokeLinecap="round" d="M 160 180 Q 65 165 40 130" />
           <path className="branch-path branch-path-6" fill="none" stroke="url(#branchGrad)" strokeWidth="6" strokeLinecap="round" d="M 160 130 Q 255 115 280 85" />
+          <path className="branch-path branch-path-7" fill="none" stroke="url(#branchGrad)" strokeWidth="6" strokeLinecap="round" d="M 160 340 Q 70 325 28 295" />
         </svg>
         <div className="flower-at-top">
           <div className="flower-center">

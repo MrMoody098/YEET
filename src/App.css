@@ -181,6 +181,7 @@
 .branch-path-4 { animation-delay: 1.2s; }
 .branch-path-5 { animation-delay: 1.3s; }
 .branch-path-6 { animation-delay: 1.4s; }
+.branch-path-7 { animation-delay: 1.45s; }
 
 @keyframes branchGrow {
   to { stroke-dashoffset: 0; }
@@ -370,6 +371,7 @@
 .branch-end-4 { left: 74%; top: 34%; animation-delay: 1.8s; }
 .branch-end-5 { left: 6%;  top: 20%; animation-delay: 1.9s; }
 .branch-end-6 { left: 70%; top: 12%; animation-delay: 2s; }
+.branch-end-7 { left: 2%;  top: 54%; animation-delay: 2.1s; }
 
 @keyframes photoBloom {
   from {
