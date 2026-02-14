@@ -69,42 +69,6 @@ function App() {
     }
   }, [])
 
-  const moveNoButton = useCallback((e) => {
-    // Only move away after first click
-    if (noClickCount === 0) return
-    
-    const card = cardRef.current
-    if (!card || !noButtonRef.current) return
-    const rect = card.getBoundingClientRect()
-    const btn = noButtonRef.current.getBoundingClientRect()
-    const btnCenterX = btn.left + btn.width / 2
-    const btnCenterY = btn.top + btn.height / 2
-    const dist = Math.hypot(e.clientX - btnCenterX, e.clientY - btnCenterY)
-    
-    if (dist < 120) {
-      const padding = 20
-      const maxX = rect.width - 120
-      const maxY = rect.height - 60
-      const mouseInCardX = e.clientX - rect.left
-      const mouseInCardY = e.clientY - rect.top
-      let newX = padding + Math.random() * maxX
-      let newY = padding + Math.random() * maxY
-      
-      // Make sure new position is far from mouse
-      let attempts = 0
-      while (Math.hypot(newX - mouseInCardX, newY - mouseInCardY) < 150 && attempts < 10) {
-        newX = padding + Math.random() * maxX
-        newY = padding + Math.random() * maxY
-        attempts++
-      }
-      
-      setNoPos({
-        x: Math.max(0, Math.min(newX, rect.width - 100)),
-        y: Math.max(0, Math.min(newY, rect.height - 50)),
-      })
-    }
-  }, [noClickCount])
-
   useEffect(() => {
     if (!saidYes || !showGif) return
     const t = setTimeout(() => setShowGif(false), GIF_DURATION_MS)
@@ -224,25 +188,6 @@ function App() {
             ref={cardRef}
             className="ask-card"
             onMouseEnter={() => setMounted(true)}
-            onMouseMove={moveNoButton}
-            onTouchMove={(e) => {
-              // Only move away after first click
-              if (noClickCount === 0) return
-              
-              const touch = e.touches[0]
-              if (touch && noButtonRef.current && cardRef.current) {
-                const btn = noButtonRef.current.getBoundingClientRect()
-                const tx = btn.left + btn.width / 2
-                const ty = btn.top + btn.height / 2
-                if (Math.hypot(touch.clientX - tx, touch.clientY - ty) < 120) {
-                  const rect = cardRef.current.getBoundingClientRect()
-                  setNoPos({
-                    x: Math.max(0, Math.min(rect.width - 100, Math.random() * rect.width)),
-                    y: Math.max(0, Math.min(rect.height - 50, Math.random() * rect.height)),
-                  })
-                }
-              }
-            }}
           >
             <p className="question">Will you be my Valentine?</p>
             <p className="sub">(Please say yes 💕)</p>
@@ -284,8 +229,9 @@ function App() {
                   setReactionSoundIndex((prev) => (prev + 1) % REACTION_SOUNDS.length)
                   
                   setNoClickCount(prev => prev + 1)
-                  // After first click, trigger initial movement
-                  if (noClickCount === 0 && cardRef.current) {
+                  
+                  // Move button to new random position on every click
+                  if (cardRef.current) {
                     const rect = cardRef.current.getBoundingClientRect()
                     setNoPos({
                       x: Math.random() * (rect.width - 140) + 20,
