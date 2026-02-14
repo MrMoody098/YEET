@@ -14,6 +14,14 @@ function App() {
   const noButtonRef = useRef(null)
   const audioRef = useRef(null)
 
+  const ensureAudioPlays = useCallback(() => {
+    if (audioRef.current && audioRef.current.paused) {
+      audioRef.current.play()
+        .then(() => setMusicPlaying(true))
+        .catch(() => {})
+    }
+  }, [])
+
   useEffect(() => {
     // Try to autoplay the background music
     if (audioRef.current) {
@@ -172,7 +180,11 @@ function App() {
             <div className="buttons">
               <button
                 className="btn btn-yes"
-                onClick={() => { setSaidYes(true); setShowGif(true) }}
+                onClick={() => { 
+                  ensureAudioPlays()
+                  setSaidYes(true)
+                  setShowGif(true)
+                }}
               >
                 Yes!
               </button>
@@ -191,6 +203,7 @@ function App() {
                 }
                 onClick={(e) => { 
                   e.preventDefault()
+                  ensureAudioPlays()
                   setNoClickCount(prev => prev + 1)
                   // After first click, trigger initial movement
                   if (noClickCount === 0 && cardRef.current) {
