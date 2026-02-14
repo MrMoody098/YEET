@@ -22,7 +22,7 @@
   min-width: 320px;
   opacity: 0;
   transform: translateY(100vh);
-  animation: slideUpCard 0.8s ease-out 1s forwards;
+  animation: slideUpCard 1.8s ease-out 0.5s forwards;
 }
 
 @keyframes slideUpCard {
