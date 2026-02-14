@@ -9,6 +9,7 @@ function App() {
   const [noPos, setNoPos] = useState(null) // null = in flow (right of Yes); { x, y } = absolute, running away
   const [noClickCount, setNoClickCount] = useState(0) // Track how many times No was clicked
   const [mounted, setMounted] = useState(true)
+  const [musicPlaying, setMusicPlaying] = useState(false)
   const cardRef = useRef(null)
   const noButtonRef = useRef(null)
   const audioRef = useRef(null)
@@ -18,16 +19,25 @@ function App() {
     if (audioRef.current) {
       const playPromise = audioRef.current.play()
       if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.log('Autoplay blocked, will play on user interaction:', error)
-        })
+        playPromise
+          .then(() => {
+            setMusicPlaying(true)
+          })
+          .catch((error) => {
+            console.log('Autoplay blocked, will play on user interaction:', error)
+            setMusicPlaying(false)
+          })
       }
     }
     
     // Fallback: play on any user interaction
     const playOnInteraction = () => {
       if (audioRef.current && audioRef.current.paused) {
-        audioRef.current.play().catch(() => {})
+        audioRef.current.play()
+          .then(() => {
+            setMusicPlaying(true)
+          })
+          .catch(() => {})
       }
     }
     
@@ -91,6 +101,21 @@ function App() {
         preload="auto"
         playsInline
       />
+      
+      {!musicPlaying && (
+        <button
+          className="music-play-btn"
+          onClick={() => {
+            if (audioRef.current) {
+              audioRef.current.play().then(() => setMusicPlaying(true))
+            }
+          }}
+          aria-label="Play music"
+        >
+          🔊 Tap to play music
+        </button>
+      )}
+      
       <div className="bg-hearts" aria-hidden="true">
         <span>💕</span><span>💗</span><span>💖</span><span>💝</span><span>❤️</span>
       </div>
