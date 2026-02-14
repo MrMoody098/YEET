@@ -204,6 +204,13 @@ function App() {
                 className="btn btn-yes"
                 onClick={() => { 
                   ensureAudioPlays()
+                  
+                  // Play yippie sound
+                  if (reactionAudioRef.current) {
+                    reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/yippiee.m4a`
+                    reactionAudioRef.current.play().catch(() => {})
+                  }
+                  
                   setSaidYes(true)
                   setShowGif(true)
                 }}
