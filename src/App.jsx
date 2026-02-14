@@ -19,6 +19,9 @@ function isIOS() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
 }
 
+const MUSIC_VOLUME_IOS = 0.05   // Very low on iOS so reaction sounds stand out
+const MUSIC_VOLUME_DESKTOP = 0.1
+
 function App() {
   const [saidYes, setSaidYes] = useState(false)
   const [showGif, setShowGif] = useState(false)
@@ -32,6 +35,22 @@ function App() {
   const audioRef = useRef(null)
   const reactionAudioRef = useRef(null)
   const musicGainRef = useRef(null) // Web Audio gain node for background music (0.1)
+  const reactionGainRef = useRef(null) // Web Audio gain boost for reaction sounds (1.4)
+
+  const connectReactionToWebAudio = useCallback(() => {
+    if (isIOS()) return
+    const el = reactionAudioRef.current
+    if (!el || reactionGainRef.current) return
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)()
+      const source = ctx.createMediaElementSource(el)
+      const gainNode = ctx.createGain()
+      gainNode.gain.value = 1.4
+      source.connect(gainNode)
+      gainNode.connect(ctx.destination)
+      reactionGainRef.current = { gainNode, ctx }
+    } catch (_) {}
+  }, [])
 
   const connectMusicToWebAudio = useCallback(() => {
     if (isIOS()) return
@@ -54,7 +73,7 @@ function App() {
     const el = audioRef.current
     if (!el || !el.paused) return
     if (isIOS()) {
-      el.volume = 0.1
+      el.volume = MUSIC_VOLUME_IOS
       el.play().then(() => setMusicPlaying(true)).catch(() => {})
       return
     }
@@ -100,7 +119,10 @@ function App() {
   return (
     <>
       <audio
-        ref={audioRef}
+        ref={(el) => {
+          audioRef.current = el
+          if (el) el.volume = isIOS() ? MUSIC_VOLUME_IOS : MUSIC_VOLUME_DESKTOP
+        }}
         src={MUSIC_SRC}
         loop
         preload="auto"
@@ -215,7 +237,14 @@ function App() {
                 onClick={() => { 
                   // Play yippie sound first (so it's not blocked by music on iOS)
                   if (reactionAudioRef.current) {
-                    reactionAudioRef.current.volume = 1.0
+                    connectReactionToWebAudio()
+                    const g = reactionGainRef.current
+                    if (g) {
+                      g.gainNode.gain.value = 1.4
+                      if (g.ctx.state === 'suspended') g.ctx.resume()
+                    } else {
+                      reactionAudioRef.current.volume = 1.0
+                    }
                     reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/${encodeURIComponent('yippiee.m4a')}`
                     reactionAudioRef.current.play().catch(() => {})
                   }
@@ -244,7 +273,14 @@ function App() {
                   
                   // Play reaction sound first (so it's not blocked by music on iOS)
                   if (reactionAudioRef.current) {
-                    reactionAudioRef.current.volume = 1.0
+                    connectReactionToWebAudio()
+                    const g = reactionGainRef.current
+                    if (g) {
+                      g.gainNode.gain.value = 1.4
+                      if (g.ctx.state === 'suspended') g.ctx.resume()
+                    } else {
+                      reactionAudioRef.current.volume = 1.0
+                    }
                     const filename = REACTION_SOUNDS[reactionSoundIndex]
                     reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/${encodeURIComponent(filename)}`
                     reactionAudioRef.current.play().catch(() => {})
