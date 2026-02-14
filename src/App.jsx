@@ -12,6 +12,13 @@ const REACTION_SOUNDS = [
   'you have to be atleast curious.m4a',
 ]
 
+const MUSIC_SRC = `${import.meta.env.BASE_URL}Pag-Ibig ay Kanibalismo II.mp3`.replace(/ /g, '%20')
+
+function isIOS() {
+  if (typeof navigator === 'undefined') return false
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+}
+
 function App() {
   const [saidYes, setSaidYes] = useState(false)
   const [showGif, setShowGif] = useState(false)
@@ -27,6 +34,7 @@ function App() {
   const musicGainRef = useRef(null) // Web Audio gain node for background music (0.2)
 
   const connectMusicToWebAudio = useCallback(() => {
+    if (isIOS()) return
     const el = audioRef.current
     if (!el || musicGainRef.current) return
     try {
@@ -45,6 +53,11 @@ function App() {
   const ensureAudioPlays = useCallback(() => {
     const el = audioRef.current
     if (!el || !el.paused) return
+    if (isIOS()) {
+      el.volume = 0.2
+      el.play().then(() => setMusicPlaying(true)).catch(() => {})
+      return
+    }
     connectMusicToWebAudio()
     const g = musicGainRef.current
     if (g) {
@@ -88,7 +101,7 @@ function App() {
     <>
       <audio
         ref={audioRef}
-        src={`${import.meta.env.BASE_URL}Pag-Ibig ay Kanibalismo II.mp3`}
+        src={MUSIC_SRC}
         loop
         preload="auto"
         playsInline
