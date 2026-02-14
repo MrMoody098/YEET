@@ -7,6 +7,7 @@ function App() {
   const [saidYes, setSaidYes] = useState(false)
   const [showGif, setShowGif] = useState(false)
   const [noPos, setNoPos] = useState(null) // null = in flow (right of Yes); { x, y } = absolute, running away
+  const [noClickCount, setNoClickCount] = useState(0) // Track how many times No was clicked
   const [mounted, setMounted] = useState(true)
   const cardRef = useRef(null)
   const noButtonRef = useRef(null)
@@ -22,6 +23,9 @@ function App() {
   }, [])
 
   const moveNoButton = useCallback((e) => {
+    // Only move away after first click
+    if (noClickCount === 0) return
+    
     const card = cardRef.current
     if (!card || !noButtonRef.current) return
     const rect = card.getBoundingClientRect()
@@ -29,7 +33,8 @@ function App() {
     const btnCenterX = btn.left + btn.width / 2
     const btnCenterY = btn.top + btn.height / 2
     const dist = Math.hypot(e.clientX - btnCenterX, e.clientY - btnCenterY)
-    if (dist < 100) {
+    
+    if (dist < 120) {
       const padding = 20
       const maxX = rect.width - 120
       const maxY = rect.height - 60
@@ -37,16 +42,21 @@ function App() {
       const mouseInCardY = e.clientY - rect.top
       let newX = padding + Math.random() * maxX
       let newY = padding + Math.random() * maxY
-      while (Math.hypot(newX - mouseInCardX, newY - mouseInCardY) < 90 && maxX > 0 && maxY > 0) {
+      
+      // Make sure new position is far from mouse
+      let attempts = 0
+      while (Math.hypot(newX - mouseInCardX, newY - mouseInCardY) < 150 && attempts < 10) {
         newX = padding + Math.random() * maxX
         newY = padding + Math.random() * maxY
+        attempts++
       }
+      
       setNoPos({
         x: Math.max(0, Math.min(newX, rect.width - 100)),
         y: Math.max(0, Math.min(newY, rect.height - 50)),
       })
     }
-  }, [])
+  }, [noClickCount])
 
   useEffect(() => {
     if (!saidYes || !showGif) return
@@ -77,12 +87,15 @@ function App() {
             onMouseEnter={() => setMounted(true)}
             onMouseMove={moveNoButton}
             onTouchMove={(e) => {
+              // Only move away after first click
+              if (noClickCount === 0) return
+              
               const touch = e.touches[0]
               if (touch && noButtonRef.current && cardRef.current) {
                 const btn = noButtonRef.current.getBoundingClientRect()
                 const tx = btn.left + btn.width / 2
                 const ty = btn.top + btn.height / 2
-                if (Math.hypot(touch.clientX - tx, touch.clientY - ty) < 100) {
+                if (Math.hypot(touch.clientX - tx, touch.clientY - ty) < 120) {
                   const rect = cardRef.current.getBoundingClientRect()
                   setNoPos({
                     x: Math.max(0, Math.min(rect.width - 100, Math.random() * rect.width)),
@@ -111,10 +124,21 @@ function App() {
                         position: 'absolute',
                         left: noPos.x,
                         top: noPos.y,
-                        transition: 'left 0.2s ease-out, top 0.2s ease-out',
+                        transition: 'left 0.3s ease-out, top 0.3s ease-out',
                       }
                 }
-                onClick={(e) => e.preventDefault()}
+                onClick={(e) => { 
+                  e.preventDefault()
+                  setNoClickCount(prev => prev + 1)
+                  // After first click, trigger initial movement
+                  if (noClickCount === 0 && cardRef.current) {
+                    const rect = cardRef.current.getBoundingClientRect()
+                    setNoPos({
+                      x: Math.random() * (rect.width - 140) + 20,
+                      y: Math.random() * (rect.height - 80) + 20,
+                    })
+                  }
+                }}
               >
                 No
               </button>
