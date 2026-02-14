@@ -210,77 +210,77 @@
 }
 
 .petal-1 { 
-  transform: translate(-50%, -50%) rotate(0deg) translateY(20px); 
+  transform: translate(-50%, -50%) rotate(0deg) translateY(-20px); 
   animation-delay: 1.35s; 
   animation-name: petalBloom1;
 }
 .petal-2 { 
-  transform: translate(-50%, -50%) rotate(45deg) translateY(20px); 
+  transform: translate(-50%, -50%) rotate(45deg) translateY(-20px); 
   animation-delay: 1.4s; 
   animation-name: petalBloom2;
 }
 .petal-3 { 
-  transform: translate(-50%, -50%) rotate(90deg) translateY(20px); 
+  transform: translate(-50%, -50%) rotate(90deg) translateY(-20px); 
   animation-delay: 1.45s; 
   animation-name: petalBloom3;
 }
 .petal-4 { 
-  transform: translate(-50%, -50%) rotate(135deg) translateY(20px); 
+  transform: translate(-50%, -50%) rotate(135deg) translateY(-20px); 
   animation-delay: 1.5s; 
   animation-name: petalBloom4;
 }
 .petal-5 { 
-  transform: translate(-50%, -50%) rotate(180deg) translateY(20px); 
+  transform: translate(-50%, -50%) rotate(180deg) translateY(-20px); 
   animation-delay: 1.55s; 
   animation-name: petalBloom5;
 }
 .petal-6 { 
-  transform: translate(-50%, -50%) rotate(225deg) translateY(20px); 
+  transform: translate(-50%, -50%) rotate(225deg) translateY(-20px); 
   animation-delay: 1.6s; 
   animation-name: petalBloom6;
 }
 .petal-7 { 
-  transform: translate(-50%, -50%) rotate(270deg) translateY(20px); 
+  transform: translate(-50%, -50%) rotate(270deg) translateY(-20px); 
   animation-delay: 1.65s; 
   animation-name: petalBloom7;
 }
 .petal-8 { 
-  transform: translate(-50%, -50%) rotate(315deg) translateY(20px); 
+  transform: translate(-50%, -50%) rotate(315deg) translateY(-20px); 
   animation-delay: 1.7s; 
   animation-name: petalBloom8;
 }
 
 @keyframes petalBloom1 {
-  from { opacity: 0; transform: translate(-50%, -50%) rotate(0deg) translateY(20px) scale(0); }
-  to { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) translateY(20px) scale(1); }
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(0deg) translateY(-20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) translateY(-20px) scale(1); }
 }
 @keyframes petalBloom2 {
-  from { opacity: 0; transform: translate(-50%, -50%) rotate(45deg) translateY(20px) scale(0); }
-  to { opacity: 1; transform: translate(-50%, -50%) rotate(45deg) translateY(20px) scale(1); }
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(45deg) translateY(-20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(45deg) translateY(-20px) scale(1); }
 }
 @keyframes petalBloom3 {
-  from { opacity: 0; transform: translate(-50%, -50%) rotate(90deg) translateY(20px) scale(0); }
-  to { opacity: 1; transform: translate(-50%, -50%) rotate(90deg) translateY(20px) scale(1); }
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(90deg) translateY(-20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(90deg) translateY(-20px) scale(1); }
 }
 @keyframes petalBloom4 {
-  from { opacity: 0; transform: translate(-50%, -50%) rotate(135deg) translateY(20px) scale(0); }
-  to { opacity: 1; transform: translate(-50%, -50%) rotate(135deg) translateY(20px) scale(1); }
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(135deg) translateY(-20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(135deg) translateY(-20px) scale(1); }
 }
 @keyframes petalBloom5 {
-  from { opacity: 0; transform: translate(-50%, -50%) rotate(180deg) translateY(20px) scale(0); }
-  to { opacity: 1; transform: translate(-50%, -50%) rotate(180deg) translateY(20px) scale(1); }
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(180deg) translateY(-20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(180deg) translateY(-20px) scale(1); }
 }
 @keyframes petalBloom6 {
-  from { opacity: 0; transform: translate(-50%, -50%) rotate(225deg) translateY(20px) scale(0); }
-  to { opacity: 1; transform: translate(-50%, -50%) rotate(225deg) translateY(20px) scale(1); }
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(225deg) translateY(-20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(225deg) translateY(-20px) scale(1); }
 }
 @keyframes petalBloom7 {
-  from { opacity: 0; transform: translate(-50%, -50%) rotate(270deg) translateY(20px) scale(0); }
-  to { opacity: 1; transform: translate(-50%, -50%) rotate(270deg) translateY(20px) scale(1); }
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(270deg) translateY(-20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(270deg) translateY(-20px) scale(1); }
 }
 @keyframes petalBloom8 {
-  from { opacity: 0; transform: translate(-50%, -50%) rotate(315deg) translateY(20px) scale(0); }
-  to { opacity: 1; transform: translate(-50%, -50%) rotate(315deg) translateY(20px) scale(1); }
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(315deg) translateY(-20px) scale(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(315deg) translateY(-20px) scale(1); }
 }
 
 .flower-core {
