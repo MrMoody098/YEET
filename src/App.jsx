@@ -31,7 +31,7 @@ function App() {
   const noButtonRef = useRef(null)
   const audioRef = useRef(null)
   const reactionAudioRef = useRef(null)
-  const musicGainRef = useRef(null) // Web Audio gain node for background music (0.2)
+  const musicGainRef = useRef(null) // Web Audio gain node for background music (0.1)
 
   const connectMusicToWebAudio = useCallback(() => {
     if (isIOS()) return
@@ -41,12 +41,12 @@ function App() {
       const ctx = new (window.AudioContext || window.webkitAudioContext)()
       const source = ctx.createMediaElementSource(el)
       const gainNode = ctx.createGain()
-      gainNode.gain.value = 0.2
+      gainNode.gain.value = 0.1
       source.connect(gainNode)
       gainNode.connect(ctx.destination)
       musicGainRef.current = { gainNode, ctx }
     } catch (e) {
-      el.volume = 0.2
+      el.volume = 0.1
     }
   }, [])
 
@@ -54,17 +54,17 @@ function App() {
     const el = audioRef.current
     if (!el || !el.paused) return
     if (isIOS()) {
-      el.volume = 0.2
+      el.volume = 0.1
       el.play().then(() => setMusicPlaying(true)).catch(() => {})
       return
     }
     connectMusicToWebAudio()
     const g = musicGainRef.current
     if (g) {
-      g.gainNode.gain.value = 0.2
+      g.gainNode.gain.value = 0.1
       if (g.ctx.state === 'suspended') g.ctx.resume()
     } else {
-      el.volume = 0.2
+      el.volume = 0.1
     }
     el.play()
       .then(() => setMusicPlaying(true))
