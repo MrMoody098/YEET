@@ -27,7 +27,7 @@ function App() {
 
   const ensureAudioPlays = useCallback(() => {
     if (audioRef.current && audioRef.current.paused) {
-      audioRef.current.volume = 0.3
+      audioRef.current.volume = 0.2
       audioRef.current.play()
         .then(() => setMusicPlaying(true))
         .catch(() => {})
@@ -37,7 +37,7 @@ function App() {
   useEffect(() => {
     // Set volume levels
     if (audioRef.current) {
-      audioRef.current.volume = 0.3 // Background music at 30%
+      audioRef.current.volume = 0.2 // Background music at 20%
     }
     if (reactionAudioRef.current) {
       reactionAudioRef.current.volume = 1.0 // Reaction sounds at 100%
@@ -61,7 +61,7 @@ function App() {
     // Fallback: play on any user interaction
     const playOnInteraction = () => {
       if (audioRef.current && audioRef.current.paused) {
-        audioRef.current.volume = 0.3
+        audioRef.current.volume = 0.2
         audioRef.current.play()
           .then(() => {
             setMusicPlaying(true)
@@ -106,7 +106,7 @@ function App() {
           className="music-play-btn"
           onClick={() => {
             if (audioRef.current) {
-              audioRef.current.volume = 0.3
+              audioRef.current.volume = 0.2
               audioRef.current.play().then(() => setMusicPlaying(true))
             }
           }}
@@ -210,6 +210,7 @@ function App() {
                   
                   // Play yippie sound
                   if (reactionAudioRef.current) {
+                    reactionAudioRef.current.volume = 1.0
                     reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/yippiee.m4a`
                     reactionAudioRef.current.play().catch(() => {})
                   }
@@ -239,6 +240,7 @@ function App() {
                   
                   // Play reaction sound
                   if (reactionAudioRef.current) {
+                    reactionAudioRef.current.volume = 1.0
                     reactionAudioRef.current.src = `${import.meta.env.BASE_URL}reacts/${REACTION_SOUNDS[reactionSoundIndex]}`
                     reactionAudioRef.current.play().catch(() => {})
                   }
