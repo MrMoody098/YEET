@@ -126,32 +126,53 @@ function App() {
       
       <div className="bg-flowers" aria-hidden="true">
         {[...Array(10)].map((_, i) => (
-          <svg key={i} className="bg-flower" viewBox="0 0 100 100">
+          <svg key={i} className="bg-flower" viewBox="0 0 120 120">
             <defs>
-              <radialGradient id={`petal-grad-${i}`} cx="40%" cy="40%">
-                <stop offset="0%" stopColor="#ffd1dc" stopOpacity="0.9" />
-                <stop offset="50%" stopColor="#ff8fab" stopOpacity="0.95" />
-                <stop offset="100%" stopColor="#e91e63" stopOpacity="1" />
+              <radialGradient id={`petal-grad-${i}`} cx="30%" cy="30%">
+                <stop offset="0%" stopColor="#ffe8f0" />
+                <stop offset="30%" stopColor="#ffc4d6" />
+                <stop offset="60%" stopColor="#ff91b8" />
+                <stop offset="85%" stopColor="#ff6b9d" />
+                <stop offset="100%" stopColor="#e91e63" />
               </radialGradient>
-              <radialGradient id={`core-grad-${i}`} cx="35%" cy="35%">
-                <stop offset="0%" stopColor="#fff9c4" />
-                <stop offset="40%" stopColor="#ffd700" />
-                <stop offset="100%" stopColor="#ff8c00" />
+              <radialGradient id={`core-grad-${i}`} cx="30%" cy="30%">
+                <stop offset="0%" stopColor="#fffde7" />
+                <stop offset="35%" stopColor="#fff59d" />
+                <stop offset="65%" stopColor="#ffd54f" />
+                <stop offset="100%" stopColor="#ffb300" />
               </radialGradient>
+              <filter id={`petal-shadow-${i}`}>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="1.5"/>
+                <feOffset dx="0" dy="1" result="offsetblur"/>
+                <feComponentTransfer>
+                  <feFuncA type="linear" slope="0.3"/>
+                </feComponentTransfer>
+                <feMerge>
+                  <feMergeNode/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
             </defs>
-            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-              <ellipse
+            {[0, 72, 144, 216, 288].map((angle) => (
+              <path
                 key={angle}
-                cx="50"
-                cy="50"
-                rx="14"
-                ry="24"
+                d="M 60 60 Q 50 35, 60 20 Q 70 35, 60 60 Z"
                 fill={`url(#petal-grad-${i})`}
-                opacity="0.85"
-                transform={`rotate(${angle} 50 50) translate(0 -16)`}
+                stroke="#ff4081"
+                strokeWidth="0.5"
+                opacity="0.9"
+                filter={`url(#petal-shadow-${i})`}
+                transform={`rotate(${angle} 60 60)`}
               />
             ))}
-            <circle cx="50" cy="50" r="10" fill={`url(#core-grad-${i})`} opacity="0.95" />
+            <circle cx="60" cy="60" r="9" fill={`url(#core-grad-${i})`} opacity="0.95" />
+            <circle cx="60" cy="60" r="7" fill="none" stroke="#ffa726" strokeWidth="0.8" opacity="0.6" />
+            {[...Array(12)].map((_, dot) => {
+              const dotAngle = (dot * 30) * Math.PI / 180;
+              const dotX = 60 + Math.cos(dotAngle) * 5;
+              const dotY = 60 + Math.sin(dotAngle) * 5;
+              return <circle key={dot} cx={dotX} cy={dotY} r="0.8" fill="#ff6d00" opacity="0.7" />;
+            })}
           </svg>
         ))}
       </div>

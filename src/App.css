@@ -205,27 +205,33 @@
 
 .petal {
   position: absolute;
-  width: 46px;
-  height: 64px;
-  background: linear-gradient(145deg, 
-    #ffd1dc 0%, 
-    #ffb3c6 20%,
-    #ff8fab 40%,
-    #ff6b9d 60%, 
-    #e91e63 85%,
-    #c2185b 100%);
-  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  width: 48px;
+  height: 68px;
+  background: 
+    radial-gradient(ellipse at 30% 25%, 
+      rgba(255, 255, 255, 0.4) 0%, 
+      rgba(255, 255, 255, 0) 50%),
+    linear-gradient(160deg, 
+      #ffe8f0 0%,
+      #ffc4d6 15%,
+      #ffadc7 30%,
+      #ff91b8 45%,
+      #ff6b9d 65%, 
+      #e91e63 85%,
+      #c2185b 100%);
+  border-radius: 45% 55% 50% 50% / 60% 70% 35% 40%;
   left: 50%;
   top: 50%;
   transform-origin: center 100%;
   opacity: 0;
   animation: petalBloom 0.8s ease forwards;
   box-shadow: 
-    inset 2px 4px 8px rgba(255, 255, 255, 0.4),
-    inset -2px -4px 8px rgba(233, 30, 99, 0.3),
-    0 2px 8px rgba(233, 30, 99, 0.25),
-    0 4px 16px rgba(255, 107, 157, 0.15);
-  filter: drop-shadow(0 1px 3px rgba(194, 24, 91, 0.2));
+    inset 3px 6px 10px rgba(255, 255, 255, 0.5),
+    inset -3px -6px 10px rgba(233, 30, 99, 0.35),
+    0 3px 10px rgba(233, 30, 99, 0.3),
+    0 6px 20px rgba(255, 107, 157, 0.2);
+  filter: drop-shadow(0 2px 4px rgba(194, 24, 91, 0.25));
+  border: 0.5px solid rgba(255, 107, 157, 0.3);
 }
 
 .petal-1 { 
