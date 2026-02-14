@@ -19,8 +19,8 @@ function isIOS() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
 }
 
-const MUSIC_VOLUME_IOS = 0.05   // Very low on iOS so reaction sounds stand out
-const MUSIC_VOLUME_DESKTOP = 0.1
+const MUSIC_VOLUME_IOS = 0.2    // iOS: use el.volume (Web Audio broke playback)
+const MUSIC_VOLUME_DESKTOP = 0.35  // Desktop: Web Audio gain, louder
 
 function App() {
   const [saidYes, setSaidYes] = useState(false)
@@ -53,33 +53,37 @@ function App() {
   }, [])
 
   const connectMusicToWebAudio = useCallback(() => {
+    if (isIOS()) return
     const el = audioRef.current
     if (!el || musicGainRef.current) return
-    const musicVol = isIOS() ? MUSIC_VOLUME_IOS : MUSIC_VOLUME_DESKTOP
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)()
       const source = ctx.createMediaElementSource(el)
       const gainNode = ctx.createGain()
-      gainNode.gain.value = musicVol
+      gainNode.gain.value = MUSIC_VOLUME_DESKTOP
       source.connect(gainNode)
       gainNode.connect(ctx.destination)
       musicGainRef.current = { gainNode, ctx }
     } catch (e) {
-      el.volume = musicVol
+      el.volume = MUSIC_VOLUME_DESKTOP
     }
   }, [])
 
   const ensureAudioPlays = useCallback(() => {
     const el = audioRef.current
     if (!el || !el.paused) return
-    const musicVol = isIOS() ? MUSIC_VOLUME_IOS : MUSIC_VOLUME_DESKTOP
+    if (isIOS()) {
+      el.volume = MUSIC_VOLUME_IOS
+      el.play().then(() => setMusicPlaying(true)).catch(() => {})
+      return
+    }
     connectMusicToWebAudio()
     const g = musicGainRef.current
     if (g) {
-      g.gainNode.gain.value = musicVol
+      g.gainNode.gain.value = MUSIC_VOLUME_DESKTOP
       if (g.ctx.state === 'suspended') g.ctx.resume()
     } else {
-      el.volume = musicVol
+      el.volume = MUSIC_VOLUME_DESKTOP
     }
     el.play()
       .then(() => setMusicPlaying(true))
